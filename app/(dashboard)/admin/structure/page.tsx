@@ -48,7 +48,7 @@ function InlineEditRow({
   return (
     <form
       action={onSave}
-      className="flex items-center gap-2"
+      className="flex flex-col gap-2 sm:flex-row sm:items-center"
     >
       <input
         name="name"
@@ -326,7 +326,7 @@ function TopicsSection({
               setAdding(false);
             });
           }}
-          className="flex items-center gap-2 border-b border-border px-5 py-3"
+          className="flex flex-col gap-2 border-b border-border px-5 py-3 sm:flex-row sm:items-center"
         >
           <select
             name="block_id"
@@ -428,7 +428,7 @@ function TopicsSection({
                                   setEditingId(null);
                                 });
                               }}
-                              className="flex flex-1 items-center gap-2"
+                              className="flex flex-1 flex-col gap-2 sm:flex-row sm:items-center"
                             >
                               <select
                                 name="block_id"

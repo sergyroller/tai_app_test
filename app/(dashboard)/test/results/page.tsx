@@ -63,7 +63,7 @@ export default function TestResultsPage() {
     <div className="mx-auto max-w-lg animate-fade-in space-y-6">
       {/* Score Card */}
       <div className="rounded-2xl border border-border bg-surface p-8 text-center shadow-card">
-        <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
+        <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 animate-scale-in">
           <Trophy className="h-10 w-10 text-primary" />
         </div>
 
@@ -108,7 +108,7 @@ export default function TestResultsPage() {
                 strokeWidth="8"
                 strokeLinecap="round"
                 strokeDasharray={`${percentage * 2.51} 251`}
-                className={scoreColor}
+                className={`${scoreColor} animate-fill-progress`}
               />
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">

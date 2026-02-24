@@ -13,6 +13,7 @@ const quickActions = [
     href: "/test/config",
     icon: ClipboardList,
     color: "bg-primary/10 text-primary",
+    borderColor: "border-t-primary",
   },
   {
     title: "Modo Examen",
@@ -20,6 +21,7 @@ const quickActions = [
     href: "/test/config?mode=exam",
     icon: BookOpen,
     color: "bg-secondary/10 text-secondary",
+    borderColor: "border-t-secondary",
   },
   {
     title: "Estadísticas",
@@ -27,6 +29,7 @@ const quickActions = [
     href: "/stats",
     icon: BarChart3,
     color: "bg-accent/10 text-accent-dark",
+    borderColor: "border-t-accent-dark",
   },
 ];
 
@@ -49,7 +52,7 @@ export default function DashboardPage() {
           <Link
             key={action.href}
             href={action.href}
-            className="group flex flex-col gap-4 rounded-2xl border border-border bg-surface p-6 shadow-soft transition-all hover:border-primary/30 hover:shadow-card"
+            className={`group flex flex-col gap-4 rounded-2xl border border-border border-t-2 ${action.borderColor} bg-surface p-6 shadow-soft transition-all hover:border-primary/30 hover:shadow-card`}
           >
             <div
               className={`flex h-12 w-12 items-center justify-center rounded-xl ${action.color}`}
@@ -74,9 +77,12 @@ export default function DashboardPage() {
         <h2 className="text-lg font-semibold text-foreground">
           Actividad reciente
         </h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Aquí aparecerán tus últimos tests realizados.
-        </p>
+        <div className="mt-4 flex flex-col items-center gap-2 py-6 text-center">
+          <BarChart3 className="h-8 w-8 text-muted" />
+          <p className="text-sm text-muted-foreground">
+            Aquí aparecerán tus últimos tests realizados.
+          </p>
+        </div>
       </div>
     </div>
   );

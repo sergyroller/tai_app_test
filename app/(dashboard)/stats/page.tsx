@@ -102,7 +102,7 @@ export default function StatsPage() {
 
       {/* Summary Cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-2xl border border-border bg-surface p-5 shadow-soft">
+        <div className="rounded-2xl border border-border border-l-4 border-l-primary/30 bg-surface p-5 shadow-soft">
           <div className="mb-2 flex items-center gap-2 text-xs text-muted-foreground">
             <BarChart3 className="h-4 w-4 text-primary" />
             Tests Realizados
@@ -110,7 +110,7 @@ export default function StatsPage() {
           <p className="text-3xl font-black text-foreground">{totalTests}</p>
         </div>
 
-        <div className="rounded-2xl border border-border bg-surface p-5 shadow-soft">
+        <div className="rounded-2xl border border-border border-l-4 border-l-secondary/30 bg-surface p-5 shadow-soft">
           <div className="mb-2 flex items-center gap-2 text-xs text-muted-foreground">
             <TrendingUp className="h-4 w-4 text-secondary" />
             Nota Media
@@ -120,7 +120,7 @@ export default function StatsPage() {
           </p>
         </div>
 
-        <div className="rounded-2xl border border-border bg-surface p-5 shadow-soft">
+        <div className="rounded-2xl border border-border border-l-4 border-l-success/30 bg-surface p-5 shadow-soft">
           <div className="mb-2 flex items-center gap-2 text-xs text-muted-foreground">
             <CheckCircle2 className="h-4 w-4 text-success" />
             Precisión
@@ -130,7 +130,7 @@ export default function StatsPage() {
           </p>
         </div>
 
-        <div className="rounded-2xl border border-border bg-surface p-5 shadow-soft">
+        <div className="rounded-2xl border border-border border-l-4 border-l-error/30 bg-surface p-5 shadow-soft">
           <div className="mb-2 flex items-center gap-2 text-xs text-muted-foreground">
             <XCircle className="h-4 w-4 text-error" />
             Total Fallos
@@ -187,36 +187,28 @@ export default function StatsPage() {
             Aún no has realizado ningún test. ¡Empieza ahora!
           </p>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  <th className="px-5 py-3">Fecha</th>
-                  <th className="px-5 py-3">Modo</th>
-                  <th className="px-5 py-3 text-center">Preguntas</th>
-                  <th className="hidden px-5 py-3 text-center sm:table-cell">
-                    Correctas
-                  </th>
-                  <th className="hidden px-5 py-3 text-center sm:table-cell">
-                    Incorrectas
-                  </th>
-                  <th className="px-5 py-3 text-right">Nota</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {history.map((h) => (
-                  <tr key={h.id} className="hover:bg-surface-alt/50">
-                    <td className="px-5 py-3 text-sm text-foreground">
-                      <div className="flex items-center gap-1.5">
-                        <Calendar className="h-3.5 w-3.5 text-muted" />
-                        {new Date(h.created_at).toLocaleDateString("es-ES", {
-                          day: "2-digit",
-                          month: "short",
-                          year: "numeric",
-                        })}
-                      </div>
-                    </td>
-                    <td className="px-5 py-3">
+          <>
+            {/* Mobile: Card layout */}
+            <div className="divide-y divide-border sm:hidden">
+              {history.map((h) => (
+                <div key={h.id} className="flex items-center gap-3 px-4 py-3">
+                  {/* Score circle */}
+                  <div
+                    className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white ${
+                      h.final_score !== null
+                        ? h.final_score >= 5
+                          ? "bg-success"
+                          : "bg-error"
+                        : "bg-muted"
+                    }`}
+                  >
+                    {h.final_score !== null
+                      ? h.final_score.toFixed(1)
+                      : "—"}
+                  </div>
+                  {/* Info */}
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
                       <span
                         className={`rounded-full px-2 py-0.5 text-xs font-medium ${
                           h.mode === "exam"
@@ -226,36 +218,93 @@ export default function StatsPage() {
                       >
                         {h.mode === "exam" ? "Examen" : "Estudio"}
                       </span>
-                    </td>
-                    <td className="px-5 py-3 text-center text-sm text-muted-foreground">
-                      {h.total_questions}
-                    </td>
-                    <td className="hidden px-5 py-3 text-center text-sm text-success sm:table-cell">
-                      {h.correct_answers}
-                    </td>
-                    <td className="hidden px-5 py-3 text-center text-sm text-error sm:table-cell">
-                      {h.incorrect_answers}
-                    </td>
-                    <td className="px-5 py-3 text-right">
-                      <span
-                        className={`text-sm font-bold ${
-                          h.final_score !== null
-                            ? h.final_score >= 5
-                              ? "text-success"
-                              : "text-error"
-                            : "text-muted-foreground"
-                        }`}
-                      >
-                        {h.final_score !== null
-                          ? h.final_score.toFixed(2)
-                          : "—"}
+                      <span className="text-xs text-muted-foreground">
+                        {h.total_questions} preg.
                       </span>
-                    </td>
+                    </div>
+                    <div className="mt-1 flex items-center gap-3 text-xs text-muted-foreground">
+                      <span className="flex items-center gap-1">
+                        <Calendar className="h-3 w-3" />
+                        {new Date(h.created_at).toLocaleDateString("es-ES", {
+                          day: "2-digit",
+                          month: "short",
+                        })}
+                      </span>
+                      <span className="text-success">✓ {h.correct_answers}</span>
+                      <span className="text-error">✗ {h.incorrect_answers}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop: Table layout */}
+            <div className="hidden sm:block">
+              <table className="w-full">
+                <thead>
+                  <tr className="text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                    <th className="px-5 py-3">Fecha</th>
+                    <th className="px-5 py-3">Modo</th>
+                    <th className="px-5 py-3 text-center">Preguntas</th>
+                    <th className="px-5 py-3 text-center">Correctas</th>
+                    <th className="px-5 py-3 text-center">Incorrectas</th>
+                    <th className="px-5 py-3 text-right">Nota</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {history.map((h) => (
+                    <tr key={h.id} className="hover:bg-surface-alt/50">
+                      <td className="px-5 py-3 text-sm text-foreground">
+                        <div className="flex items-center gap-1.5">
+                          <Calendar className="h-3.5 w-3.5 text-muted" />
+                          {new Date(h.created_at).toLocaleDateString("es-ES", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          })}
+                        </div>
+                      </td>
+                      <td className="px-5 py-3">
+                        <span
+                          className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+                            h.mode === "exam"
+                              ? "bg-secondary/10 text-secondary"
+                              : "bg-primary/10 text-primary"
+                          }`}
+                        >
+                          {h.mode === "exam" ? "Examen" : "Estudio"}
+                        </span>
+                      </td>
+                      <td className="px-5 py-3 text-center text-sm text-muted-foreground">
+                        {h.total_questions}
+                      </td>
+                      <td className="px-5 py-3 text-center text-sm text-success">
+                        {h.correct_answers}
+                      </td>
+                      <td className="px-5 py-3 text-center text-sm text-error">
+                        {h.incorrect_answers}
+                      </td>
+                      <td className="px-5 py-3 text-right">
+                        <span
+                          className={`text-sm font-bold ${
+                            h.final_score !== null
+                              ? h.final_score >= 5
+                                ? "text-success"
+                                : "text-error"
+                              : "text-muted-foreground"
+                          }`}
+                        >
+                          {h.final_score !== null
+                            ? h.final_score.toFixed(2)
+                            : "—"}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </div>
     </div>

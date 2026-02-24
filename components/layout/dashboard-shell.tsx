@@ -18,7 +18,11 @@ import {
   X,
   ChevronRight,
   Shield,
+  Sun,
+  Moon,
+  Monitor,
 } from "lucide-react";
+import { useTheme } from "@/components/theme-provider";
 
 interface DashboardShellProps {
   children: React.ReactNode;
@@ -75,6 +79,7 @@ export function DashboardShell({
   const pathname = usePathname();
   const router = useRouter();
   const supabase = createClient();
+  const { theme, setTheme } = useTheme();
 
   const isAdmin = userRole === "admin";
 
@@ -134,6 +139,46 @@ export function DashboardShell({
         )}
       </nav>
 
+      {/* Theme Toggle */}
+      <div className="border-t border-border px-4 py-3">
+        <div className="mb-1.5 text-xs font-medium text-muted-foreground">Tema</div>
+        <div className="flex gap-1 rounded-xl bg-surface-alt p-1">
+          <button
+            onClick={() => setTheme("system")}
+            className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg py-1.5 text-xs font-medium transition-all ${
+              theme === "system"
+                ? "bg-background text-foreground shadow-soft"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Monitor className="h-3.5 w-3.5" />
+            Auto
+          </button>
+          <button
+            onClick={() => setTheme("light")}
+            className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg py-1.5 text-xs font-medium transition-all ${
+              theme === "light"
+                ? "bg-background text-foreground shadow-soft"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Sun className="h-3.5 w-3.5" />
+            Claro
+          </button>
+          <button
+            onClick={() => setTheme("dark")}
+            className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg py-1.5 text-xs font-medium transition-all ${
+              theme === "dark"
+                ? "bg-background text-foreground shadow-soft"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Moon className="h-3.5 w-3.5" />
+            Oscuro
+          </button>
+        </div>
+      </div>
+
       {/* User Info & Logout */}
       <div className="border-t border-border p-4">
         <div className="mb-3 flex items-center gap-3">
@@ -170,7 +215,7 @@ export function DashboardShell({
       {/* Mobile Overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+          className="fixed inset-0 z-40 bg-black/50 lg:hidden animate-fade-in-overlay"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -193,7 +238,7 @@ export function DashboardShell({
       {/* Main Content */}
       <div className="flex flex-1 flex-col">
         {/* Mobile Header */}
-        <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-border bg-surface/80 px-4 py-3 backdrop-blur-md lg:hidden">
+        <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-border border-b-primary/10 bg-surface/80 px-4 py-3 backdrop-blur-md lg:hidden">
           <button
             onClick={() => setSidebarOpen(true)}
             className="rounded-lg p-2 text-muted-foreground hover:bg-surface-alt hover:text-foreground"

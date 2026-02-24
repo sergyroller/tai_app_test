@@ -34,7 +34,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="rounded-2xl bg-surface p-8 shadow-elevated">
+    <div className="rounded-2xl border border-border/50 bg-surface p-8 shadow-elevated">
       {/* Header */}
       <div className="mb-8 text-center">
         <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10">

@@ -217,7 +217,7 @@ export default function ActiveTestPage() {
   return (
     <div className="animate-fade-in space-y-4">
       {/* Header Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-border bg-surface px-4 py-3 shadow-soft">
+      <div className="flex flex-col gap-2 rounded-2xl border border-border bg-surface px-4 py-3 shadow-soft sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
           <span
             className={`rounded-full px-3 py-1 text-xs font-bold ${
@@ -233,7 +233,7 @@ export default function ActiveTestPage() {
           </span>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center justify-between gap-3 sm:justify-end">
           {timeRemaining !== null && (
             <span
               className={`flex items-center gap-1 rounded-lg px-2 py-1 text-sm font-mono font-bold ${
@@ -275,7 +275,7 @@ export default function ActiveTestPage() {
       </div>
 
       {/* Question Card */}
-      <div className="rounded-2xl border border-border bg-surface p-5 shadow-card sm:p-6">
+      <div className="overflow-hidden rounded-2xl border border-border bg-surface p-5 pt-6 shadow-card sm:p-6 sm:pt-7">
         {/* Question Header */}
         <div className="mb-4 flex items-start justify-between">
           <span className="rounded-lg bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary">
@@ -295,7 +295,7 @@ export default function ActiveTestPage() {
 
         {/* Code Snippet */}
         {question.code_snippet && (
-          <div className="mb-5 overflow-x-auto rounded-xl bg-gray-900 p-4">
+          <div className="mb-5 min-w-0 overflow-x-auto rounded-xl bg-gray-900 p-4">
             <div className="mb-2 flex items-center gap-1.5 text-xs text-gray-400">
               <Code2 className="h-3 w-3" />
               {question.code_language || "código"}
@@ -412,8 +412,11 @@ export default function ActiveTestPage() {
           Anterior
         </button>
 
-        {/* Question dots (for mobile scrollable) */}
-        <div className="flex max-w-[200px] gap-1 overflow-x-auto sm:max-w-none">
+        {/* Question indicator: compact on mobile, dots on desktop */}
+        <span className="text-sm font-medium text-muted-foreground sm:hidden">
+          {currentIndex + 1} / {totalQuestions}
+        </span>
+        <div className="hidden max-w-none gap-1 sm:flex">
           {testData.questions.map((q, i) => {
             const a = answers.get(q.id);
             let dotClass = "bg-surface-alt";

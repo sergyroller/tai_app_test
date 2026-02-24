@@ -116,9 +116,86 @@ export default function AdminQuestionsPage() {
         </button>
       </div>
 
-      {/* Questions Table */}
+      {/* Questions List */}
       <div className="overflow-hidden rounded-2xl border border-border bg-surface shadow-soft">
-        <div className="overflow-x-auto">
+        {/* Mobile: Card layout */}
+        <div className="divide-y divide-border sm:hidden">
+          {loading ? (
+            <div className="py-12 text-center">
+              <Loader2 className="mx-auto h-5 w-5 animate-spin text-muted" />
+            </div>
+          ) : questions.length === 0 ? (
+            <p className="py-12 text-center text-sm text-muted-foreground">
+              No hay preguntas.
+            </p>
+          ) : (
+            questions.map((q) => (
+              <div key={q.id} className="px-4 py-3">
+                <div className="mb-1.5 flex items-start justify-between gap-2">
+                  <p className="line-clamp-2 text-sm font-medium text-foreground">
+                    {q.statement}
+                  </p>
+                  <div className="flex shrink-0 items-center gap-1">
+                    <Link
+                      href={`/admin/questions/${q.id}`}
+                      className="rounded-lg p-1.5 text-muted-foreground hover:bg-surface-alt hover:text-foreground"
+                    >
+                      <Pencil className="h-3.5 w-3.5" />
+                    </Link>
+                    <button
+                      onClick={() => {
+                        if (
+                          confirm("¿Eliminar esta pregunta y sus respuestas?")
+                        ) {
+                          startTransition(async () => {
+                            await deleteQuestion(q.id);
+                            await loadQuestions();
+                          });
+                        }
+                      }}
+                      className="rounded-lg p-1.5 text-muted-foreground hover:bg-error/10 hover:text-error"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => {
+                      startTransition(async () => {
+                        await toggleQuestion(q.id, !q.is_active);
+                        await loadQuestions();
+                      });
+                    }}
+                    className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${
+                      q.is_active
+                        ? "bg-success/10 text-success"
+                        : "bg-error/10 text-error"
+                    }`}
+                  >
+                    {q.is_active ? (
+                      <>
+                        <Eye className="h-3 w-3" /> Activa
+                      </>
+                    ) : (
+                      <>
+                        <EyeOff className="h-3 w-3" /> Inactiva
+                      </>
+                    )}
+                  </button>
+                  {q.topics && (
+                    <span className="truncate text-xs text-muted-foreground">
+                      {q.topics.blocks?.name} / {q.topics.name}
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Desktop: Table layout */}
+        <div className="hidden sm:block">
           <table className="w-full">
             <thead>
               <tr className="border-b border-border bg-surface-alt text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -16,6 +17,9 @@ export const metadata: Metadata = {
   title: "TAI App — Tests para Oposiciones TAI",
   description:
     "Aplicación de tests configurables para preparar la oposición de Técnicos Auxiliares de Informática (TAI).",
+  other: {
+    "theme-color": "#3b82f6",
+  },
 };
 
 export default function RootLayout({
@@ -28,8 +32,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );
 }
+
